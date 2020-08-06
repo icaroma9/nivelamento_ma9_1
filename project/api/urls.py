@@ -6,8 +6,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from api.views import (
-    ListCreateUsuarioView,
-    DetailUsuarioView, PedidoViewSet,
+    UsuarioViewSet, PedidoViewSet,
     ProdutoViewSet, PedidoProdutoViewSet,
     TokenObtainPairView)
 
@@ -18,6 +17,9 @@ router.register(
 router.register(
     'pedidos', PedidoViewSet,
     basename='pedidos')
+router.register(
+    'usuarios', UsuarioViewSet,
+    basename='usuarios')
 
 pedidos_produtos_router = routers.NestedSimpleRouter(
     router, 'pedidos', lookup='pedidos')
@@ -32,12 +34,6 @@ urlpatterns = [
     path('token/refresh/',
         TokenRefreshView.as_view(),
         name='token-refresh'),
-    path('usuarios/',
-        ListCreateUsuarioView.as_view(),
-        name='create-usuario'),
-    path('usuarios/<int:pk>/',
-        DetailUsuarioView.as_view(),
-        name='detail-usuario'),
     path('', include(router.urls)),
     path('', include(pedidos_produtos_router.urls)),
 ]
