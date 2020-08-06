@@ -1,26 +1,26 @@
-# curso-docker
+# Nivelamento 1
 
 Projeto de nivelamento para o cargo de Desenvolvedor Python (DRF).
 
 ## Tabela
 Usuário (Subclasse de django.config.auth.models.AbstractUser)
-    endereço (texto)
-    rg (texto, checa com o regex "^\d{3}\.\d{3}\.\d{3}\-\d{2}$")
-    cpf (texto, checa com o regex "^(\d\.?-?)+$")
+- endereço (texto)
+- rg (texto, checa com o regex "^\d{3}\.\d{3}\.\d{3}\-\d{2}$")
+- cpf (texto, checa com o regex "^(\d\.?-?)+$")
 
 Produto
-    nome (texto)
-    descrição (texto)
+- nome (texto)
+- descrição (texto)
 
 Pedido
-    usuário (chave estrangeira)
-    endereço (texto)
-    feito (data e hora, adicionado automaticamente)
+- usuário (chave estrangeira)
+- endereço (texto)
+- feito (data e hora, adicionado automaticamente)
 
 PedidoProduto
-    produto (chave estrangeira)
-    pedido (chave estrangeira)
-    quantidade (inteiro positivo)
+- produto (chave estrangeira)
+- pedido (chave estrangeira)
+- quantidade (inteiro positivo)
 
 ## Endpoints
 - api/token/     
@@ -44,6 +44,6 @@ PedidoProduto
 
 ## Como executar
 1. Configurar ambiente virtual a partir do arquivo Pipfile (pipenv) ou requirements.txt
-2. Executar migrações python `project/manage.py migrate`
+2. Executar migrações `project/manage.py migrate`
 3. Criar um super usuário `project/manage.py createsuperuser`
 4. Executar servidor `project/manage.py runserver`
