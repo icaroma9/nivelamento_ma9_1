@@ -7,14 +7,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0004_auto_20200806_1424'),
+        ("app", "0004_auto_20200806_1424"),
     ]
 
     operations = [
         migrations.AlterModelManagers(
-            name='usuario',
-            managers=[
-                ('objects', app.managers.UsuarioManager()),
-            ],
+            name="usuario",
+            managers=[("objects", app.managers.UsuarioManager()),],
         ),
     ]
