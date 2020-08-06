@@ -36,9 +36,9 @@ PedidoProduto
 
 ## Observações
 - Os endpoints de token não requerem autenticação
-- Os endpoints de produtos são para apenas leitura para todos os usuários, exceto superusuários
+- Os endpoints de produtos aceitam apenas o verbo GET para qualquer solicitação (exceto para solicitações de superusuários)
 - O verbo GET em api/usuarios/ só pode ser usado por superusuários
-- O verbo POST em api/usuarios/ está liberado para todos criarem um usuário
+- O verbo POST em api/usuarios/ pode ser usado por todos
 - Todos os outros endpoints não podem ser acessados sem autenticação
 - Autenticação é feita com JWT, com email e senha
 - A manipulação dos dados nos endpoints de pedidos é restrita para os pedidos específicos do usuário autenticado
@@ -47,5 +47,5 @@ PedidoProduto
 ## Como executar
 1. Configurar ambiente virtual a partir do arquivo Pipfile (pipenv) ou requirements.txt
 2. Executar migrações `project/manage.py migrate`
-3. Criar um super usuário `project/manage.py createsuperuser`
+3. Criar um superusuário `project/manage.py createsuperuser`
 4. Executar servidor `project/manage.py runserver`
