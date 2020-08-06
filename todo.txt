@@ -1,0 +1,35 @@
+confirmar crud de usuário
+github da emrpesa
+entregar
+
+api/token/     
+api/token/refresh/  
+api/usuarios/
+api/usuarios/id/
+api/produtos/  
+api/produtos/id/
+api/pedido/id/produto/
+api/pedido/id/produto/id/
+api/pedidos/
+api/pedidos/id/
+api/pedido/id/produto/
+api/pedido/id/produto/id/
+
+usuario 
+    pegar token com email e senha
+    url de login retorna um jwt 
+    usuário deve servir como cliente 
+    endereço 
+    rg cpf 
+
+produtos
+
+pedidos
+    pedidos podem ter vários produtos
+    endereço de entrega
+
+softdelete com flag de deleted on
+    safe delete
+
+usar lib 
+https://github.com/henriquebastos/python-decouple
