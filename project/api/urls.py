@@ -6,7 +6,8 @@ from rest_framework_simplejwt.views import (
 )
 
 from api.views import (
-    UsuarioViewSet, PedidoViewSet,
+    ListCreateUsuarioView,
+    DetailUsuarioView, PedidoViewSet,
     ProdutoViewSet, PedidoProdutoViewSet,
     TokenObtainPairView)
 
@@ -14,9 +15,6 @@ router = routers.DefaultRouter()
 router.register(
     'produtos', ProdutoViewSet,
     basename='produtos')
-router.register(
-    'usuarios', UsuarioViewSet,
-    basename='usuarios')
 router.register(
     'pedidos', PedidoViewSet,
     basename='pedidos')
@@ -30,10 +28,16 @@ pedidos_produtos_router.register(
 urlpatterns = [
     path('token/',
         TokenObtainPairView.as_view(),
-            name='token_obtain_pair'),
+            name='token-obtain'),
     path('token/refresh/',
         TokenRefreshView.as_view(),
-        name='token_refresh'),
+        name='token-refresh'),
+    path('usuarios/',
+        ListCreateUsuarioView.as_view(),
+        name='create-usuario'),
+    path('usuarios/<int:pk>/',
+        DetailUsuarioView.as_view(),
+        name='detail-usuario'),
     path('', include(router.urls)),
     path('', include(pedidos_produtos_router.urls)),
 ]

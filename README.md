@@ -3,7 +3,7 @@
 Projeto de nivelamento para o cargo de Desenvolvedor Python (DRF).
 
 ## Tabela
-Usuário (Subclasse de django.config.auth.models.AbstractUser)
+Usuário (subclasse de django.config.auth.models.AbstractUser)
 - endereço (texto)
 - rg (texto, checa com o regex "^\d{3}\.\d{3}\.\d{3}\-\d{2}$")
 - cpf (texto, checa com o regex "^(\d\.?-?)+$")
@@ -36,10 +36,12 @@ PedidoProduto
 
 ## Observações
 - Os endpoints de token não requerem autenticação
+- Os endpoints de produtos são para apenas leitura para todos os usuários, exceto superusuários
+- O verbo GET em api/usuarios/ só pode ser usado por superusuários
+- O verbo POST em api/usuarios/ está liberado para todos criarem um usuário
 - Todos os outros endpoints não podem ser acessados sem autenticação
 - Autenticação é feita com JWT, com email e senha
 - A manipulação dos dados nos endpoints de pedidos é restrita para os pedidos específicos do usuário autenticado
-- O pylint pode ser executado na raiz do projeto com o comando `pylint project`
 - Remoções são feitas de maneira lógica, com o armazenamento da data e hora (datetime) da remoção. 
 
 ## Como executar

@@ -5,8 +5,10 @@ from django.core.validators import RegexValidator
 from safedelete.models import SafeDeleteModel
 from safedelete.models import SOFT_DELETE_CASCADE
 
+from app.managers import UsuarioManager
+
 # Create your models here.
-class Usuario(AbstractUser, SafeDeleteModel):
+class Usuario(SafeDeleteModel, AbstractUser):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
     email = models.EmailField(unique=True)
@@ -25,6 +27,8 @@ class Usuario(AbstractUser, SafeDeleteModel):
                 r'^(\d\.?-?)+$')])
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    objects = UsuarioManager()
 
     def __str__(self):
         return self.email

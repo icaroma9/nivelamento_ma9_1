@@ -1,7 +1,11 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
+from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
+from rest_framework.exceptions import PermissionDenied
+
 from rest_framework_simplejwt.views import TokenViewBase
 
 from api.serializers import (
@@ -13,17 +17,60 @@ from app.models import (
 
 # Create your views here.
 
-class UsuarioViewSet(viewsets.ModelViewSet):
-    serializer_class = UsuarioSerializer
+class ListCreateUsuarioView(generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+    permission_dict = {
+        'POST': [],
+        'GET': [IsAdminUser]}
+
+    def get_permissions(self):
+        method = self.request.method
+        try:
+            permissions = self.permission_dict[
+                method]
+            return [
+                permission() for permission in permissions]
+        except KeyError:
+            return [
+                permission() for permission in self.permission_classes]
+
+class DetailUsuarioView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        queryset = self.get_queryset()
+        if pk != self.request.user.pk:
+            raise PermissionDenied
+        return get_object_or_404(queryset, pk=pk)
 
 class ProdutoViewSet(viewsets.ModelViewSet):
-    serializer_class = ProdutoSerializer
     queryset = Produto.objects.all()
+    serializer_class = ProdutoSerializer
+    permission_dict = {
+        'create': [IsAdminUser],
+        'update': [IsAdminUser],
+        'partial_update': [IsAdminUser],
+        'destroy': [IsAdminUser],
+        'list': [], 
+        'retrieve': [],}
+
+    def get_permissions(self):
+        action = self.action
+        try:
+            permissions = self.permission_dict[
+                action]
+            return [
+                permission() for permission in permissions]
+        except KeyError:
+            return [
+                permission() for permission in self.permission_classes]
 
 class PedidoViewSet(viewsets.ModelViewSet):
-    serializer_class = PedidoSerializer
     queryset = Pedido.objects.all()
+    serializer_class = PedidoSerializer
 
     def list(self, request):
         queryset = Pedido.objects.filter(usuario=request.user)

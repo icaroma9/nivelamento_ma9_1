@@ -14,7 +14,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        password = validated_data.get('password')
+        password = validated_data.get('password', None)
         instance = super().create(validated_data)
         if password:
             instance.set_password(password)
