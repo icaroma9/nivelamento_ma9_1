@@ -45,7 +45,17 @@ PedidoProduto
 - Remoções são feitas de maneira lógica, com o armazenamento da data e hora (datetime) da remoção. 
 
 ## Como executar
-1. Configurar ambiente virtual a partir do arquivo Pipfile (pipenv) ou requirements.txt
-2. Executar migrações `project/manage.py migrate`
-3. Criar um superusuário `project/manage.py createsuperuser`
-4. Executar servidor `project/manage.py runserver`
+1. Clonar repositório
+2. Configurar ambiente virtual a partir do arquivo Pipfile (pipenv) ou requirements.txt
+3. Configurar variáveis de ambiente em um arquivo .env na raiz do projeto:
+- SECRET_KEY: chave do Django
+- DEBUG: flag para ambiente de desenvolvimento
+- DB_ENGINE: engine do banco de dados para ser carregada pelo Django
+- DB_NAME: nome do banco de dados
+- DB_USER: usuário do banco de dados
+- DB_PASSWORD: senha do usuário do banco de dados
+- DB_HOST: host do serviço de banco de dados
+- PORT: porta do serviço de banco de dados
+4. Executar migrações `project/manage.py migrate`
+5. Criar um superusuário `project/manage.py createsuperuser`
+5. Executar servidor `project/manage.py runserver`
