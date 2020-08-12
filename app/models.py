@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
 
 from safedelete.models import SafeDeleteModel
 from safedelete.models import SOFT_DELETE_CASCADE
@@ -11,23 +10,12 @@ from app.managers import UsuarioManager
 class Usuario(SafeDeleteModel, AbstractUser):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
+    id = models.AutoField(primary_key=True)
+
     email = models.EmailField(unique=True)
     endereco = models.CharField("Endereço", max_length=200)
-    cpf = models.CharField(
-        max_length=30,
-        verbose_name="CPF",
-        validators=[
-            RegexValidator(
-                r"^\d{3}\.\d{3}\.\d{3}\-\d{2}$",
-                message="Formato esperado: '999.999.999-99'",
-            )
-        ],
-    )
-    rg = models.CharField(
-        max_length=30,
-        verbose_name="RG",
-        validators=[RegexValidator(r"^(\d\.?-?)+$")],
-    )
+    cpf = models.CharField(max_length=30, verbose_name="CPF",)
+    rg = models.CharField(max_length=30, verbose_name="RG",)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 
@@ -40,6 +28,7 @@ class Usuario(SafeDeleteModel, AbstractUser):
 class Produto(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
+    id = models.AutoField(primary_key=True)
     nome = models.CharField("Nome", max_length=100,)
     descricao = models.CharField("Descrição", max_length=300)
 
@@ -50,6 +39,7 @@ class Produto(SafeDeleteModel):
 class Pedido(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
+    id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(
         "Usuario", verbose_name="Usuário", on_delete=models.CASCADE
     )
@@ -63,6 +53,7 @@ class Pedido(SafeDeleteModel):
 class PedidoProduto(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
+    id = models.AutoField(primary_key=True)
     produto = models.ForeignKey(
         "Produto", verbose_name="Produto", on_delete=models.CASCADE
     )

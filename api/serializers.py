@@ -1,3 +1,6 @@
+from django.core.validators import RegexValidator
+
+
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -9,6 +12,20 @@ class TokenSerializer(TokenObtainPairSerializer):
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    cpf = serializers.CharField(
+        max_length=30,
+        validators=[
+            RegexValidator(
+                r"^\d{3}\.\d{3}\.\d{3}\-\d{2}$",
+                message="Formato esperado: '999.999.999-99'",
+            )
+        ],
+    )
+
+    rg = serializers.CharField(
+        max_length=30, validators=[RegexValidator(r"^(\d\.?-?)+$")]
+    )
+
     class Meta:
         model = Usuario
         exclude = ["deleted"]

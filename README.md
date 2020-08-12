@@ -56,6 +56,9 @@ PedidoProduto
 - DB_PASSWORD: senha do usuário do banco de dados
 - DB_HOST: host do serviço de banco de dados
 - DB_PORT: porta do serviço de banco de dados
-4. Executar migrações `project/manage.py migrate`
-5. Criar um superusuário `project/manage.py createsuperuser`
-5. Executar servidor `project/manage.py runserver`
+4. Executar migrações `python manage.py migrate`
+5. Criar um superusuário `python manage.py createsuperuser`
+5. Executar servidor `python manage.py runserver`
+
+### Testes
+Executar servidor `python manage.py test`

@@ -1,0 +1,8 @@
+É importante adicionar as pastas e arquivos gerados por IDEs e editores no .gitignore 
+    (checar se entra no commit agora)
+
+commitar testes iniciais
+refatorar testes para remover duplicações
+adiconar mais
+commitar 
+avisar gustavo
