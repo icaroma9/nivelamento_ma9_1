@@ -7,8 +7,8 @@ from app.tests.test_models import (
     mock_pedido,
     mock_pedidoProduto,
 )
-from api.tests.test_views import mock_request
-from api.serializers import (
+from app.api.tests.test_views import mock_request
+from app.api.serializers import (
     TokenSerializer,
     UsuarioSerializer,
     ProdutoSerializer,

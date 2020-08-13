@@ -1,11 +1,10 @@
 from unittest.mock import Mock
 
-
 from rest_framework.test import APITransactionTestCase
 from rest_framework.permissions import IsAdminUser
 
 from app.tests.test_models import mock_usuario, mock_pedido, mock_pedidoProduto
-from api.views import (
+from app.api.views import (
     PermissionsModelViewSet,
     UsuarioViewSet,
     PedidoViewSet,

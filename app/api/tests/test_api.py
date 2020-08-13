@@ -9,8 +9,6 @@ from app.tests.test_models import (
     mock_pedidoProduto,
 )
 
-# Create your tests here.
-
 
 class BaseTestCase(APILiveServerTestCase):
     @classmethod
@@ -293,11 +291,10 @@ class PedidoProdutosTestCase(AuthenticatedTestCase):
     def test_non_safe_produto_url(self):
         """User-restricted"""
         pedProduto_data = {
-            "pedido": self.produto.pk,
-            "produto": self.pedido.pk,
+            "pedido": self.pedido.pk,
+            "produto": self.produto.pk,
             "quantidade": 2,
         }
-
         request = self.client.post(
             self.pedProduto_url, pedProduto_data, format="json"
         )
@@ -312,6 +309,7 @@ class PedidoProdutosTestCase(AuthenticatedTestCase):
         request = self.client.put(
             self.pedProduto_detail_url, pedProduto_data, format="json"
         )
+        import pdb;pdb.set_trace()
         self.assertEqual(request.status_code, 200)
         self.assertTrue(request.json())
 
@@ -323,3 +321,4 @@ class PedidoProdutosTestCase(AuthenticatedTestCase):
 
         request = self.client.delete(self.pedProduto_detail_url, format="json")
         self.assertEqual(request.status_code, 204)
+

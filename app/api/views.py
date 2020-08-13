@@ -7,7 +7,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from rest_framework_simplejwt.views import TokenViewBase
 
-from api.serializers import (
+from .serializers import (
     UsuarioSerializer,
     ProdutoSerializer,
     PedidoSerializer,
@@ -15,8 +15,6 @@ from api.serializers import (
     TokenSerializer,
 )
 from app.models import Usuario, Produto, Pedido, PedidoProduto
-
-# Create your views here.
 
 
 class PermissionsModelViewSet(viewsets.ModelViewSet):
@@ -37,10 +35,8 @@ class UsuarioViewSet(PermissionsModelViewSet):
     permission_dict = {"create": [], "list": [IsAdminUser]}
 
     def retrieve(self, request, pk=None):
-        if pk:
-            pk = int(pk)
         queryset = self.get_queryset()
-        if pk != request.user.pk:
+        if str(pk) != str(request.user.pk):
             raise PermissionDenied
         usuario = get_object_or_404(queryset, pk=pk)
         serializer = UsuarioSerializer(usuario)
@@ -70,8 +66,6 @@ class PedidoViewSet(PermissionsModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        if pk:
-            pk = int(pk)
         queryset = Pedido.objects.filter(usuario=request.user)
         pedido = get_object_or_404(queryset, pk=pk)
         serializer = PedidoSerializer(pedido)
@@ -81,10 +75,9 @@ class PedidoViewSet(PermissionsModelViewSet):
 class PedidoProdutoViewSet(PermissionsModelViewSet):
     serializer_class = PedidoProdutoSerializer
     queryset = PedidoProduto.objects.all()
+    lookup_value_regex = '[0-9a-f]{32}'
 
     def list(self, request, pedidos_pk=None):
-        if pedidos_pk:
-            pedidos_pk = int(pedidos_pk)
         queryset = Pedido.objects.filter(usuario=request.user)
         pedido = get_object_or_404(queryset, pk=pedidos_pk)
         queryset = PedidoProduto.objects.filter(pedido=pedido)
@@ -92,10 +85,6 @@ class PedidoProdutoViewSet(PermissionsModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None, pedidos_pk=None):
-        if pk:
-            pk = int(pk)
-        if pedidos_pk:
-            pedidos_pk = int(pedidos_pk)
         queryset = Pedido.objects.filter(usuario=request.user)
         pedido = get_object_or_404(queryset, pk=pedidos_pk)
         queryset = PedidoProduto.objects.filter(pedido=pedido)
