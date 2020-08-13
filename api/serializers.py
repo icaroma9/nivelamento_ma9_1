@@ -76,7 +76,6 @@ class PedidoProdutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PedidoProduto
         exclude = ["deleted", "pedido"]
-        extra_kwargs = {"pedido": {"read_only": True}}
 
     def create(self, validated_data):
         pedido_pk = self.context["pedidos_pk"]

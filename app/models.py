@@ -33,7 +33,7 @@ class Produto(SafeDeleteModel):
     descricao = models.CharField("Descrição", max_length=300)
 
     def __str__(self):
-        return self.name
+        return str(self.nome)
 
 
 class Pedido(SafeDeleteModel):

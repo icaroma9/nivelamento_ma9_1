@@ -34,12 +34,13 @@ class PermissionsModelViewSet(viewsets.ModelViewSet):
 class UsuarioViewSet(PermissionsModelViewSet):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
-    permission_dict = {"create": [],"list":[IsAdminUser]}
+    permission_dict = {"create": [], "list": [IsAdminUser]}
 
     def retrieve(self, request, pk=None):
-        pk = int(pk)
+        if pk:
+            pk = int(pk)
         queryset = self.get_queryset()
-        if pk != self.request.user.pk:
+        if pk != request.user.pk:
             raise PermissionDenied
         usuario = get_object_or_404(queryset, pk=pk)
         serializer = UsuarioSerializer(usuario)
@@ -69,7 +70,8 @@ class PedidoViewSet(PermissionsModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        pk = int(pk)
+        if pk:
+            pk = int(pk)
         queryset = Pedido.objects.filter(usuario=request.user)
         pedido = get_object_or_404(queryset, pk=pk)
         serializer = PedidoSerializer(pedido)
@@ -81,6 +83,8 @@ class PedidoProdutoViewSet(PermissionsModelViewSet):
     queryset = PedidoProduto.objects.all()
 
     def list(self, request, pedidos_pk=None):
+        if pedidos_pk:
+            pedidos_pk = int(pedidos_pk)
         queryset = Pedido.objects.filter(usuario=request.user)
         pedido = get_object_or_404(queryset, pk=pedidos_pk)
         queryset = PedidoProduto.objects.filter(pedido=pedido)
@@ -88,6 +92,10 @@ class PedidoProdutoViewSet(PermissionsModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None, pedidos_pk=None):
+        if pk:
+            pk = int(pk)
+        if pedidos_pk:
+            pedidos_pk = int(pedidos_pk)
         queryset = Pedido.objects.filter(usuario=request.user)
         pedido = get_object_or_404(queryset, pk=pedidos_pk)
         queryset = PedidoProduto.objects.filter(pedido=pedido)
