@@ -72,7 +72,6 @@ class PedidoSerializer(serializers.ModelSerializer):
 
 
 class PedidoProdutoSerializer(serializers.ModelSerializer):
-    #produto = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = PedidoProduto
         exclude = ["deleted", "pedido"]
