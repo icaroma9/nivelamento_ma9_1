@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from rest_framework_nested import routers
+from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from app.api.views import (
@@ -12,21 +12,19 @@ from app.api.views import (
 )
 
 
-router = routers.DefaultRouter()
-router.register("produtos", ProdutoViewSet, basename="produtos")
-router.register("pedidos", PedidoViewSet, basename="pedidos")
-router.register("usuarios", UsuarioViewSet, basename="usuarios")
+router = DefaultRouter()
+router.register("produtos", ProdutoViewSet)
+router.register("pedidos", PedidoViewSet)
+router.register("usuarios", UsuarioViewSet)
 
-pedidos_produtos_router = routers.NestedSimpleRouter(
-    router, "pedidos", lookup="pedidos"
-)
-pedidos_produtos_router.register(
-    "produtos", PedidoProdutoViewSet, basename="produtos"
+router.register(
+    r"pedidos/(?P<pedidos_pk>[^/.]+)/produtos", PedidoProdutoViewSet
 )
 
 urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="token-obtain"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
+    path(
+        "api/token/refresh/", TokenRefreshView.as_view(), name="token-refresh"
+    ),
     path("api/", include(router.urls)),
-    path("api/", include(pedidos_produtos_router.urls)),
 ]

@@ -7,6 +7,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from rest_framework_simplejwt.views import TokenViewBase
 
+from app.models import Usuario, Produto, Pedido, PedidoProduto
 from .serializers import (
     UsuarioSerializer,
     ProdutoSerializer,
@@ -14,18 +15,17 @@ from .serializers import (
     PedidoProdutoSerializer,
     TokenSerializer,
 )
-from app.models import Usuario, Produto, Pedido, PedidoProduto
 
 
 class PermissionsModelViewSet(viewsets.ModelViewSet):
     permission_dict = {}
 
     def get_permissions(self):
-        action = self.action
         try:
+            action = self.action
             permissions = self.permission_dict[action]
             return [permission() for permission in permissions]
-        except KeyError:
+        except (KeyError, AttributeError):
             return [permission() for permission in self.permission_classes]
 
 
@@ -34,13 +34,14 @@ class UsuarioViewSet(PermissionsModelViewSet):
     serializer_class = UsuarioSerializer
     permission_dict = {"create": [], "list": [IsAdminUser]}
 
-    def retrieve(self, request, pk=None):
+    def get_object(self):
+        pk = self.kwargs.get("pk")
         queryset = self.get_queryset()
-        if str(pk) != str(request.user.pk):
+        if str(pk) != str(self.request.user.pk):
             raise PermissionDenied
-        usuario = get_object_or_404(queryset, pk=pk)
-        serializer = UsuarioSerializer(usuario)
-        return Response(serializer.data)
+        obj = get_object_or_404(queryset, pk=pk)
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class ProdutoViewSet(PermissionsModelViewSet):
@@ -65,17 +66,16 @@ class PedidoViewSet(PermissionsModelViewSet):
         serializer = PedidoSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
-        queryset = Pedido.objects.filter(usuario=request.user)
-        pedido = get_object_or_404(queryset, pk=pk)
-        serializer = PedidoSerializer(pedido)
-        return Response(serializer.data)
+    def get_object(self):
+        queryset = Pedido.objects.filter(usuario=self.request.user)
+        obj = get_object_or_404(queryset, pk=self.kwargs.get("pk"))
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class PedidoProdutoViewSet(PermissionsModelViewSet):
     serializer_class = PedidoProdutoSerializer
     queryset = PedidoProduto.objects.all()
-    lookup_value_regex = '[0-9a-f]{32}'
 
     def list(self, request, pedidos_pk=None):
         queryset = Pedido.objects.filter(usuario=request.user)
@@ -84,19 +84,17 @@ class PedidoProdutoViewSet(PermissionsModelViewSet):
         serializer = PedidoProdutoSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None, pedidos_pk=None):
-        queryset = Pedido.objects.filter(usuario=request.user)
-        pedido = get_object_or_404(queryset, pk=pedidos_pk)
-        queryset = PedidoProduto.objects.filter(pedido=pedido)
-        pedido_produto = get_object_or_404(queryset, pk=pk)
-        serializer = PedidoProdutoSerializer(pedido_produto)
-        return Response(serializer.data)
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        obj = get_object_or_404(queryset, pedido__pk=self.kwargs["pedidos_pk"])
+        self.check_object_permissions(self.request, obj)
+        return obj
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         pedidos_pk = self.kwargs["pedidos_pk"]
         queryset = Pedido.objects.filter(usuario=self.request.user)
-        pedido = get_object_or_404(queryset, pk=pedidos_pk)
+        get_object_or_404(queryset, pk=pedidos_pk)
         context.update({"pedidos_pk": pedidos_pk})
         return context
 

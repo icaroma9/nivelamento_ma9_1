@@ -140,3 +140,7 @@ class PedidoProdutoTestCase(TestCase):
         self.assertTrue(PedidoProduto.objects.all())
         self.data["pedido"].delete()
         self.assertFalse(PedidoProduto.objects.all())
+
+    def test_unique(self):
+        with self.assertRaises(IntegrityError):
+            PedidoProduto.objects.create(**self.data)

@@ -234,6 +234,10 @@ class PedidoTestCase(AuthenticatedTestCase):
         self.assertEqual(request.status_code, 200)
         self.assertTrue(request.json())
 
+        request = self.client.get(self.pedido_detail_url, format="json")
+        self.assertEqual(request.status_code, 200)
+        self.assertTrue(request.json())
+
     def test_non_safe_pedido(self):
         """User-restricted"""
         pedido_data = {"usuario": self.usuario.pk, "endereco": "test"}
@@ -274,7 +278,13 @@ class PedidoProdutosTestCase(AuthenticatedTestCase):
         )
         self.pedProduto_detail_url = self.pedProduto_url + f"{self.produto.pk}/"
 
-    def test_get_produto(self):
+        self.pedProduto_data = {
+            "pedido": self.pedido.pk,
+            "produto": self.produto.pk,
+            "quantidade": 2,
+        }
+
+    def test_get_pedidoProduto(self):
         """User-restricted"""
         request = self.client.get(self.pedProduto_url, format="json")
         self.assertEqual(request.status_code, 401)
@@ -288,33 +298,30 @@ class PedidoProdutosTestCase(AuthenticatedTestCase):
         self.assertEqual(request.status_code, 200)
         self.assertNotEqual(request.json(), [])
 
-    def test_non_safe_produto_url(self):
+        request = self.client.get(self.pedProduto_detail_url, format="json")
+        self.assertEqual(request.status_code, 200)
+        self.assertTrue(request.json())
+
+    def test_non_safe_pedidoProduto_url(self):
         """User-restricted"""
-        pedProduto_data = {
-            "pedido": self.pedido.pk,
-            "produto": self.produto.pk,
-            "quantidade": 2,
-        }
         request = self.client.post(
-            self.pedProduto_url, pedProduto_data, format="json"
+            self.pedProduto_url, self.pedProduto_data, format="json"
         )
         self.assertEqual(request.status_code, 401)
 
         self.authenticate_user()
-        request = self.client.post(
-            self.pedProduto_url, pedProduto_data, format="json"
+        self.client.get(
+            self.pedProduto_detail_url, self.pedProduto_data, format="json"
         )
-        self.assertEqual(request.status_code, 201)
 
         request = self.client.put(
-            self.pedProduto_detail_url, pedProduto_data, format="json"
+            self.pedProduto_detail_url, self.pedProduto_data, format="json"
         )
-        import pdb;pdb.set_trace()
         self.assertEqual(request.status_code, 200)
         self.assertTrue(request.json())
 
         request = self.client.patch(
-            self.pedProduto_detail_url, pedProduto_data, format="json"
+            self.pedProduto_detail_url, self.pedProduto_data, format="json"
         )
         self.assertEqual(request.status_code, 200)
         self.assertTrue(request.json())
@@ -322,3 +329,8 @@ class PedidoProdutosTestCase(AuthenticatedTestCase):
         request = self.client.delete(self.pedProduto_detail_url, format="json")
         self.assertEqual(request.status_code, 204)
 
+        self.pedProduto_data["produto"] = mock_produto()["produto"].pk
+        request = self.client.post(
+            self.pedProduto_url, self.pedProduto_data, format="json"
+        )
+        self.assertEqual(request.status_code, 201)
