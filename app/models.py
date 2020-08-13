@@ -1,16 +1,19 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from safedelete.models import SafeDeleteModel
 from safedelete.models import SOFT_DELETE_CASCADE
 
+
 from app.managers import UsuarioManager
 
-# Create your models here.
+
 class Usuario(SafeDeleteModel, AbstractUser):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     email = models.EmailField(unique=True)
     endereco = models.CharField("Endereço", max_length=200)
@@ -28,7 +31,7 @@ class Usuario(SafeDeleteModel, AbstractUser):
 class Produto(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome = models.CharField("Nome", max_length=100,)
     descricao = models.CharField("Descrição", max_length=300)
 
@@ -39,7 +42,7 @@ class Produto(SafeDeleteModel):
 class Pedido(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     usuario = models.ForeignKey(
         "Usuario", verbose_name="Usuário", on_delete=models.CASCADE
     )
@@ -53,7 +56,7 @@ class Pedido(SafeDeleteModel):
 class PedidoProduto(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     produto = models.ForeignKey(
         "Produto", verbose_name="Produto", on_delete=models.CASCADE
     )
@@ -64,3 +67,8 @@ class PedidoProduto(SafeDeleteModel):
 
     def __str__(self):
         return f"{self.produto} x{self.quantidade}"
+
+    class Meta:
+        unique_together = [
+            ["pedido", "produto"],
+        ]

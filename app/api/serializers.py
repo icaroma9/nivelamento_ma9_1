@@ -1,6 +1,5 @@
 from django.core.validators import RegexValidator
 
-
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 

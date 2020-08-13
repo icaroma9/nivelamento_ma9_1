@@ -1,11 +1,10 @@
 from unittest.mock import Mock
 
-
 from rest_framework.test import APITransactionTestCase
 from rest_framework.permissions import IsAdminUser
 
 from app.tests.test_models import mock_usuario, mock_pedido, mock_pedidoProduto
-from api.views import (
+from app.api.views import (
     PermissionsModelViewSet,
     UsuarioViewSet,
     PedidoViewSet,
@@ -50,7 +49,8 @@ class TestUsuarioViewSet(APITransactionTestCase):
         self.view = mock_view(self.viewSet, self.request)
 
     def test_retrieve(self):
-        response = self.view.retrieve(self.request, pk=self.usuario.pk)
+        view = mock_view(self.viewSet, self.request, pk=self.usuario.pk)
+        response = view.retrieve(self.request, pk=self.usuario.pk)
         self.assertEqual(response.status_code, 200)
 
 
@@ -65,7 +65,8 @@ class TestPedidoViewSet(APITransactionTestCase):
         self.view = mock_view(self.viewSet, self.request)
 
     def test_retrieve(self):
-        response = self.view.retrieve(self.request, pk=self.pedido.pk)
+        view = mock_view(self.viewSet, self.request, pk=self.pedido.pk)
+        response = view.retrieve(self.request, pk=self.pedido.pk)
         self.assertEqual(response.status_code, 200)
 
     def test_list(self):
@@ -78,7 +79,7 @@ class TestPedidoProdutoViewSet(APITransactionTestCase):
         mock_dict = mock_pedidoProduto()
         self.usuario = mock_dict["usuario"]
         self.pedido = mock_dict["data"]["pedido"]
-        self.pedidoProduto = mock_dict["pedidoProduto"]
+        self.produto = mock_dict["data"]["produto"]
 
         self.viewSet = PedidoProdutoViewSet()
         self.request = mock_request(self.usuario)
@@ -88,7 +89,7 @@ class TestPedidoProdutoViewSet(APITransactionTestCase):
 
     def test_retrieve(self):
         response = self.view.retrieve(
-            self.request, pk=self.pedidoProduto.pk, pedidos_pk=self.pedido.pk
+            self.request, pk=self.produto.pk, pedidos_pk=self.pedido.pk
         )
         self.assertEqual(response.status_code, 200)
 
