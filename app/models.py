@@ -1,24 +1,26 @@
 import uuid
 
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-from safedelete.models import SafeDeleteModel
-from safedelete.models import SOFT_DELETE_CASCADE
-
-
 from app.managers import UsuarioManager
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from safedelete.models import SOFT_DELETE_CASCADE, SafeDeleteModel
 
 
 class Usuario(SafeDeleteModel, AbstractUser):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, deft=uuid.uuid4, editabsle=False)
 
     email = models.EmailField(unique=True)
     endereco = models.CharField("Endereço", max_length=200)
-    cpf = models.CharField(max_length=30, verbose_name="CPF",)
-    rg = models.CharField(max_length=30, verbose_name="RG",)
+    cpf = models.CharField(
+        max_length=30,
+        verbose_name="CPF",
+    )
+    rg = models.CharField(
+        max_length=30,
+        verbose_name="RG",
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 
@@ -32,7 +34,10 @@ class Produto(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nome = models.CharField("Nome", max_length=100,)
+    nome = models.CharField(
+        "Nome",
+        max_length=100,
+    )
     descricao = models.CharField("Descrição", max_length=300)
 
     def __str__(self):

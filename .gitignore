@@ -157,3 +157,9 @@ dmypy.json
 .vscode/
 
 migrations
+
+.pylintrc
+.coveragerc
+pyproject.toml
+setup.cfg
+.pre-commit-config.yaml

@@ -1,13 +1,12 @@
-from rest_framework.test import APILiveServerTestCase
-
 from app.models import Usuario
 from app.tests.test_models import (
-    mock_usuario,
-    mock_superusuario,
     mock_pedido,
-    mock_produto,
     mock_pedidoProduto,
+    mock_produto,
+    mock_superusuario,
+    mock_usuario,
 )
+from rest_framework.test import APILiveServerTestCase
 
 
 class BaseTestCase(APILiveServerTestCase):

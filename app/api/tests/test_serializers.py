@@ -1,20 +1,19 @@
-from rest_framework.test import APITransactionTestCase
-
-from app.models import Usuario
-from app.tests.test_models import (
-    mock_usuario,
-    mock_produto,
-    mock_pedido,
-    mock_pedidoProduto,
-)
-from app.api.tests.test_views import mock_request
 from app.api.serializers import (
+    PedidoProdutoSerializer,
+    PedidoSerializer,
+    ProdutoSerializer,
     TokenSerializer,
     UsuarioSerializer,
-    ProdutoSerializer,
-    PedidoSerializer,
-    PedidoProdutoSerializer,
 )
+from app.api.tests.test_views import mock_request
+from app.models import Usuario
+from app.tests.test_models import (
+    mock_pedido,
+    mock_pedidoProduto,
+    mock_produto,
+    mock_usuario,
+)
+from rest_framework.test import APITransactionTestCase
 
 
 class TestTokenSerializer(APITransactionTestCase):

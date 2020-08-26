@@ -1,15 +1,14 @@
 from unittest.mock import Mock
 
-from rest_framework.test import APITransactionTestCase
-from rest_framework.permissions import IsAdminUser
-
-from app.tests.test_models import mock_usuario, mock_pedido, mock_pedidoProduto
 from app.api.views import (
+    PedidoProdutoViewSet,
+    PedidoViewSet,
     PermissionsModelViewSet,
     UsuarioViewSet,
-    PedidoViewSet,
-    PedidoProdutoViewSet,
 )
+from app.tests.test_models import mock_pedido, mock_pedidoProduto, mock_usuario
+from rest_framework.permissions import IsAdminUser
+from rest_framework.test import APITransactionTestCase
 
 
 def mock_request(usuario):

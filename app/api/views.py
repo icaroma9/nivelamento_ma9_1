@@ -1,19 +1,17 @@
+from app.models import Pedido, PedidoProduto, Produto, Usuario
 from django.shortcuts import get_object_or_404
-
-from rest_framework.response import Response
 from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser
 from rest_framework.exceptions import PermissionDenied
-
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenViewBase
 
-from app.models import Usuario, Produto, Pedido, PedidoProduto
 from .serializers import (
-    UsuarioSerializer,
-    ProdutoSerializer,
-    PedidoSerializer,
     PedidoProdutoSerializer,
+    PedidoSerializer,
+    ProdutoSerializer,
     TokenSerializer,
+    UsuarioSerializer,
 )
 
 

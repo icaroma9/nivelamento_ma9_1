@@ -1,16 +1,13 @@
-from django.urls import path, include
-
-from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView
-
 from app.api.views import (
-    UsuarioViewSet,
+    PedidoProdutoViewSet,
     PedidoViewSet,
     ProdutoViewSet,
-    PedidoProdutoViewSet,
     TokenObtainPairView,
+    UsuarioViewSet,
 )
-
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenRefreshView
 
 router = DefaultRouter()
 router.register("produtos", ProdutoViewSet)

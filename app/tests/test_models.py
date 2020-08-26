@@ -1,8 +1,7 @@
-from django.test import TestCase
-from django.db.utils import IntegrityError
+from app.models import Pedido, PedidoProduto, Produto, Usuario
 from django.db import transaction
-
-from app.models import Usuario, Pedido, Produto, PedidoProduto
+from django.db.utils import IntegrityError
+from django.test import TestCase
 
 
 def mock_usuario(create=True):
